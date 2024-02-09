@@ -1,21 +1,7 @@
 import { Layout } from 'antd';
 import AppHeader from './components/Layout/AppHeader';
 import AppSider from './components/Layout/AppSider';
-
-const headerStyle = {
-	textAlign: 'center',
-	color: '#fff',
-	height: 60,
-	paddingInline: 48,
-	lineHeight: '64px',
-	backgroundColor: '#4096ff',
-};
-const contentStyle = {
-	textAlign: 'center',
-	minHeight: 'calc(100vh - 60px)',
-	color: '#fff',
-	backgroundColor: '#001529',
-};
+import AppContent from './components/Layout/AppContent';
 
 export default function App() {
 	return (
@@ -23,7 +9,7 @@ export default function App() {
 			<AppHeader />
 			<Layout>
 				<AppSider />
-				<Layout.Content style={contentStyle}>Content</Layout.Content>
+				<AppContent />
 			</Layout>
 		</Layout>
 	);
