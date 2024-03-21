@@ -1,6 +1,8 @@
-import { Layout, Select, Space, Button, Flex } from 'antd';
+import { Layout, Select, Space, Button, Flex, Modal, Drawer } from 'antd';
 import { useEffect, useState } from 'react';
 import { useCrypto } from '../../context/crypto-context';
+import AddAssetForm from '../AddAssetForm';
+import CoinInfoModal from '../CoinInfoModal';
 
 const headerStyle = {
 	width: '100%',
@@ -9,7 +11,7 @@ const headerStyle = {
 	padding: '1rem',
 	display: 'flex',
 	justifyContent: 'space-between',
-	alightItems: 'center',
+	aligtItems: 'center',
 	// background: 'white',
 };
 const handleChange = (value) => {
@@ -17,13 +19,17 @@ const handleChange = (value) => {
 };
 
 export default function AppHeader() {
-	const { select, setSelect } = useState(false);
+	const [select, setSelect] = useState(false);
+	const [drawer, setDrawer] = useState(false);
+
+	const [coin, setCoin] = useState(null);
+	const [modal, setModal] = useState(false);
 	const { crypto } = useCrypto();
 
 	useEffect(() => {
 		const keypress = (event) => {
 			if (event.key === '/') {
-				setSelect(true);
+				setSelect((prev) => !prev);
 			}
 		};
 		document.addEventListener('keypress', keypress);
@@ -31,8 +37,10 @@ export default function AppHeader() {
 	}, []);
 
 	function handleSelect(value) {
-		console.log(value);
+		setCoin(crypto.find((c) => c.id === value));
+		setModal(true);
 	}
+
 	return (
 		<Layout.Header style={headerStyle}>
 			<Select
@@ -43,7 +51,6 @@ export default function AppHeader() {
 				onSelect={handleSelect}
 				onClick={() => setSelect((prev) => !prev)}
 				value='press/to open'
-				optionLabelProp='label'
 				options={crypto.map((coin) => ({
 					label: coin.name,
 					value: coin.id,
@@ -61,8 +68,21 @@ export default function AppHeader() {
 				)}
 			/>
 			<Flex gap='small' wrap='wrap'>
-				<Button type='primary'>Add Asset</Button>
+				<Button type='primary' onClick={() => setDrawer(true)}>
+					Add Asset
+				</Button>
 			</Flex>
+			<Modal open={modal} onCancel={() => setModal(false)} footer={null}>
+				<CoinInfoModal coin={coin} />
+			</Modal>
+			<Drawer
+				title='Add Asset'
+				width='600px'
+				onClose={() => setDrawer(false)}
+				open={drawer}
+			>
+				<AddAssetForm />
+			</Drawer>
 		</Layout.Header>
 	);
 }
