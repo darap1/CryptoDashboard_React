@@ -40,10 +40,12 @@ export default function CoinInfoModal({ coin }) {
 					<Typography.Text strong>Capitalization : </Typography.Text>
 					<Tag>{coin.marketCap.toFixed(2)} $</Tag>
 				</Typography.Paragraph>
-				<Typography.Paragraph>
-					<Typography.Text strong>Contract address : </Typography.Text>
-					<Tag>{coin.contractAddress}</Tag>
-				</Typography.Paragraph>
+				{coin.contractAddress && (
+					<Typography.Paragraph>
+						<Typography.Text strong>Contract address : </Typography.Text>
+						<Tag>{coin.contractAddress}</Tag>
+					</Typography.Paragraph>
+				)}
 			</Divider>
 		</>
 	);
